@@ -1,0 +1,54 @@
+name: Windows 10 ISO
+on: workflow_dispatch
+jobs:
+  build:
+    name: Windows 10 ISO
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        os_version: [ 22H2 ]
+        os_arch: [ x64 ]
+
+        include:
+        - os_version: 22H2
+          os_build: 19042.2486
+
+    steps:
+      - name: Configure runner
+        run: |
+          choco install 7zip
+          docker system prune -a -f
+          New-Item "C:\workspace" -ItemType Directory
+
+      - name: Download UUP Media Creator
+        shell: pwsh
+        run: |
+          $DownloadUrl = "https://github.com/gus33000/UUPMediaCreator/releases/download/v3.1.4.0/win-x64.zip"
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest $DownloadUrl -OutFile .\UUPMediaCreator.zip
+          Expand-Archive -Path .\UUPMediaCreator.zip C:\UUPMediaCreator
+          echo "PATH=$Env:PATH;C:\UUPMediaCreator\CLI" >> $Env:GITHUB_ENV
+
+      - name: Download UUP files
+        shell: pwsh
+        run: |
+          $OSArch = '${{matrix.os_arch}}'
+          $OSBuild = '${{matrix.os_build}}'
+          $MachineType = @{'x64'='amd64';'arm64'='arm64'}[$OSArch]
+          $ReportingVersion = "10.0.${OSBuild}"
+          UUPDownload.exe -s Professional -r Retail -b Retail -c vb_release -l en-US -t $MachineType -v $ReportingVersion
+
+      - name: Create Windows ISO
+        shell: pwsh
+        run: |
+          $OSArch = '${{matrix.os_arch}}'
+          $OSVersion = '${{matrix.os_version}}'
+          $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
+          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Win10_${OSVersion}_${OSArch}.iso"
+
+      - name: Upload Windows ISO
+        uses: actions/upload-artifact@v3
+        with:
+          name: Win10-${{matrix.os_version}}-${{matrix.os_arch}}-iso
+          path: C:\workspace\Win10_${{matrix.os_version}}_${{matrix.os_arch}}.iso
