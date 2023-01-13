@@ -1,0 +1,35 @@
+name: Windows ISO
+on: workflow_dispatch
+jobs:
+  build:
+    name: Windows 11 ISO
+    runs-on: windows-2022
+
+    steps:
+      - name: Configure runner
+        run: |
+          choco install 7zip
+
+      - name: Download UUP Media Creator
+        shell: pwsh
+        run: |
+          $DownloadUrl = "https://github.com/gus33000/UUPMediaCreator/releases/download/v3.1.4.0/win-x64.zip"
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest $DownloadUrl -OutFile .\UUPMediaCreator.zip
+          Expand-Archive -Path .\UUPMediaCreator.zip C:\UUPMediaCreator
+          echo "PATH=$Env:PATH;C:\UUPMediaCreator" >> $Env:GITHUB_ENV
+
+      - name: UUP Download
+        shell: pwsh
+        run: |
+          UUPDownload.exe -s Professional -r Retail -b Retail -c vb_release -l en-US -t arm64 -v 10.0.22000.1219
+
+      - name: UUP Media Converter
+        shell: pwsh
+        run: |
+          UUPMediaConverter.exe -l en-US --uup-path .\10.0.22000.1219.co_release_svc_prod1.221103-1144_arm64fre_709065a4d785 --iso-path .\Win11_21H2_arm64.iso
+
+      - name: UUP Summary
+        shell: pwsh
+        run: |
+          Get-Item *.iso | Select-Object -Property Name,Length
