@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         os_version: [ 22H2 ]
-        os_arch: [ amd64, arm64 ]
+        os_arch: [ x64, arm64 ]
 
         include:
         - os_version: 22H2
@@ -33,7 +33,9 @@ jobs:
         run: |
           $OSArch = '${{matrix.os_arch}}'
           $OSBuild = '${{matrix.os_build}}'
-          UUPDownload.exe -s Professional -r Retail -b Retail -c vb_release -l en-US -t $OSArch -v "10.0.${OSBuild}"
+          $MachineType = @{'x64'='amd64';'arm64'='arm64'}[$OSArch]
+          $ReportingVersion = "10.0.${OSBuild}"
+          UUPDownload.exe -s Professional -r Retail -b Retail -c vb_release -l en-US -t $MachineType -v $ReportingVersion
 
       - name: Create Windows ISO
         shell: pwsh
