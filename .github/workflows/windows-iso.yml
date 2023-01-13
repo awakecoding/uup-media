@@ -7,7 +7,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [ x64, arm64 ]
+        os_version: [ 22H2 ]
+        os_arch: [ x64, arm64 ]
 
     steps:
       - name: Configure runner
@@ -26,18 +27,19 @@ jobs:
       - name: Download UUP files
         shell: pwsh
         run: |
-          $Arch = '${{matrix.arch}}'
-          UUPDownload.exe -s Professional -r Retail -b Retail -c vb_release -l en-US -t $Arch -v 10.0.22621.1105
+          $OSArch = '${{matrix.os_arch}}'
+          UUPDownload.exe -s Professional -r Retail -b Retail -c vb_release -l en-US -t $OSArch -v 10.0.22621.1105
 
       - name: Create Windows ISO
         shell: pwsh
         run: |
-          $Arch = '${{matrix.arch}}'
+          $OSArch = '${{matrix.os_arch}}'
+          $OSVersion = '${{matrix.os_version}}'
           $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
-          .\UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path ".\Win11_22H2_${Arch}.iso"
+          .\UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path ".\Win11_${OSVersion}_${OSArch}.iso"
 
       - name: Upload Windows ISO
         uses: actions/upload-artifact@v3
         with:
           name: iso
-          path: *.iso
+          path: Win11_${{matrix.os_version}}_${{matrix.os_arch}}.iso
