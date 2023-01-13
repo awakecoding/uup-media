@@ -4,6 +4,10 @@ jobs:
   build:
     name: Windows 11 ISO
     runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [ x64, arm64 ]
 
     steps:
       - name: Configure runner
@@ -19,17 +23,21 @@ jobs:
           Expand-Archive -Path .\UUPMediaCreator.zip C:\UUPMediaCreator
           echo "PATH=$Env:PATH;C:\UUPMediaCreator\CLI" >> $Env:GITHUB_ENV
 
-      - name: UUP Download
+      - name: Download UUP files
         shell: pwsh
         run: |
-          UUPDownload.exe -s Professional -r Retail -b Retail -c vb_release -l en-US -t arm64 -v 10.0.22000.1219
+          $Arch = '${{matrix.arch}}'
+          UUPDownload.exe -s Professional -r Retail -b Retail -c vb_release -l en-US -t $Arch -v 10.0.22621.1105
 
-      - name: UUP Media Converter
+      - name: Create Windows ISO
         shell: pwsh
         run: |
-          UUPMediaConverter.exe -l en-US --uup-path .\10.0.22000.1219.co_release_svc_prod1.221103-1144_arm64fre_709065a4d785 --iso-path .\Win11_21H2_arm64.iso
+          $Arch = '${{matrix.arch}}'
+          $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
+          .\UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path ".\Win11_22H2_${Arch}.iso"
 
-      - name: UUP Summary
-        shell: pwsh
-        run: |
-          Get-Item *.iso | Select-Object -Property Name,Length
+      - name: Upload Windows ISO
+        uses: actions/upload-artifact@v3
+        with:
+          name: iso
+          path: *.iso
