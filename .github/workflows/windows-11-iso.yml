@@ -20,6 +20,8 @@ jobs:
       - name: Configure runner
         run: |
           choco install 7zip
+          docker system prune -a -f
+          New-Item "C:\workspace" -ItemType Directory
 
       - name: Download UUP Media Creator
         shell: pwsh
@@ -45,10 +47,10 @@ jobs:
           $OSArch = '${{matrix.os_arch}}'
           $OSVersion = '${{matrix.os_version}}'
           $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
-          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path ".\Win11_${OSVersion}_${OSArch}.iso"
+          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Win11_${OSVersion}_${OSArch}.iso"
 
       - name: Upload Windows ISO
         uses: actions/upload-artifact@v3
         with:
-          name: iso
-          path: Win11_${{matrix.os_version}}_${{matrix.os_arch}}.iso
+          name: Win11-${{matrix.os_version}}-${{matrix.os_arch}}-iso
+          path: C:\workspace\Win11_${{matrix.os_version}}_${{matrix.os_arch}}.iso
