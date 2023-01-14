@@ -17,7 +17,6 @@ jobs:
     steps:
       - name: Configure runner
         run: |
-          choco install 7zip
           docker system prune -a -f
           New-Item "C:\workspace" -ItemType Directory
 

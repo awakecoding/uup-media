@@ -1,0 +1,52 @@
+name: Windows 2022 ISO
+on: workflow_dispatch
+jobs:
+  build:
+    name: Windows 2022 ISO
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        os_build: [ 20348.1487 ]
+
+    steps:
+      - name: Configure runner
+        run: |
+          docker system prune -a -f
+          New-Item "C:\workspace" -ItemType Directory
+
+      - name: Download UUP Media Creator
+        shell: pwsh
+        run: |
+          $Repo = 'gus33000/UUPMediaCreator'
+          $RunId = $(gh run list -R $Repo -w 'CI' --json 'status,databaseId,conclusion') |
+            ConvertFrom-Json | Where-Object { ($_.status -eq 'completed') -and ($_.conclusion -eq 'success') } |
+            Select-Object -First 1 -ExpandProperty databaseId
+          New-Item "download" -ItemType Directory -ErrorAction SilentlyContinue
+          Set-Location "download"
+          gh run download -R $Repo $RunId
+          New-Item "C:\UUPMediaCreator" -ItemType Directory
+          Move-Item .\win-x64\CLI C:\UUPMediaCreator\
+          Remove-Item * -Recurse
+          Set-Location ".."
+          echo "PATH=$Env:PATH;C:\UUPMediaCreator\CLI" >> $Env:GITHUB_ENV
+
+      - name: Download UUP files
+        shell: pwsh
+        run: |
+          $OSBuild = '${{matrix.os_build}}'
+          $ReportingVersion = "10.0.${OSBuild}"
+          UUPDownload.exe -s StandardServer -r Retail -b Retail -c fe_release -l en-US -t amd64 -v $ReportingVersion
+
+      - name: Create Windows ISO
+        shell: pwsh
+        run: |
+          $OSBuild = '${{matrix.os_build}}'
+          $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
+          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Windows_Server_2022_${OSBuild}.iso"
+
+      - name: Upload Windows ISO
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows_Server_2022_${{matrix.os_build}}-iso
+          path: C:\workspace\Windows_Server_2022_${{matrix.os_build}}.iso
