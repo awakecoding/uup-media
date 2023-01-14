@@ -17,6 +17,8 @@ jobs:
 
       - name: Download UUP Media Creator
         shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           $Repo = 'gus33000/UUPMediaCreator'
           $RunId = $(gh run list -R $Repo -w 'CI' --json 'status,databaseId,conclusion') |
