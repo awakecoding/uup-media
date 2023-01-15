@@ -7,4 +7,6 @@
 
 [Windows Server 2022 update history](https://support.microsoft.com/en-gb/topic/windows-server-2022-update-history-e1caa597-00c5-4ab9-9f3e-8212fe80b2ee)
 
+[Windows 10 and Windows Server 2019 update history](https://support.microsoft.com/en-us/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059)
+
 [Windows Server release information](https://learn.microsoft.com/en-us/windows-server/get-started/windows-server-release-info)

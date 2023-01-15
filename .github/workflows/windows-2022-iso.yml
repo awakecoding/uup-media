@@ -35,6 +35,7 @@ jobs:
 
       - name: Download UUP files
         shell: pwsh
+        working-directory: C:\workspace
         run: |
           $OSBuild = '${{matrix.os_build}}'
           $ReportingVersion = "10.0.${OSBuild}"
@@ -42,6 +43,7 @@ jobs:
 
       - name: Create Windows ISO
         shell: pwsh
+        working-directory: C:\workspace
         run: |
           $OSBuild = '${{matrix.os_build}}'
           $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
