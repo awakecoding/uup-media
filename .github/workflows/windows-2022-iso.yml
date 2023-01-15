@@ -15,22 +15,13 @@ jobs:
           docker system prune -a -f
           New-Item "C:\workspace" -ItemType Directory
 
+      - name: Clone project
+        uses: actions/checkout@v3
+
       - name: Download UUP Media Creator
         shell: pwsh
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
-          $Repo = 'gus33000/UUPMediaCreator'
-          $RunId = $(gh run list -R $Repo -w 'CI' --json 'status,databaseId,conclusion') |
-            ConvertFrom-Json | Where-Object { ($_.status -eq 'completed') -and ($_.conclusion -eq 'success') } |
-            Select-Object -First 1 -ExpandProperty databaseId
-          New-Item "download" -ItemType Directory -ErrorAction SilentlyContinue
-          Set-Location "download"
-          gh run download -R $Repo $RunId
-          New-Item "C:\UUPMediaCreator" -ItemType Directory
-          Move-Item .\win-x64\CLI C:\UUPMediaCreator\
-          Remove-Item * -Recurse
-          Set-Location ".."
+          Expand-Archive -Path .\tools\UUPMediaCreator.zip C:\UUPMediaCreator
           echo "PATH=$Env:PATH;C:\UUPMediaCreator\CLI" >> $Env:GITHUB_ENV
 
       - name: Download UUP files
