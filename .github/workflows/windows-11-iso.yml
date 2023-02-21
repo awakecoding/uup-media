@@ -12,9 +12,9 @@ jobs:
 
         include:
         - os_version: 22H2
-          os_build: 22621.1105
+          os_build: 22621.1265
         - os_version: 21H2
-          os_build: 22000.1455
+          os_build: 22000.1574
 
     steps:
       - name: Configure runner
@@ -33,6 +33,7 @@ jobs:
 
       - name: Download UUP files
         shell: pwsh
+        working-directory: C:\workspace
         run: |
           $OSArch = '${{matrix.os_arch}}'
           $OSBuild = '${{matrix.os_build}}'
@@ -42,14 +43,15 @@ jobs:
 
       - name: Create Windows ISO
         shell: pwsh
+        working-directory: C:\workspace
         run: |
           $OSArch = '${{matrix.os_arch}}'
           $OSVersion = '${{matrix.os_version}}'
           $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
-          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Win11_${OSVersion}_${OSArch}.iso"
+          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Windows_11_${OSVersion}_${OSArch}.iso"
 
       - name: Upload Windows ISO
         uses: actions/upload-artifact@v3
         with:
-          name: Win11-${{matrix.os_version}}-${{matrix.os_arch}}-iso
-          path: C:\workspace\Win11_${{matrix.os_version}}_${{matrix.os_arch}}.iso
+          name: Windows-11-${{matrix.os_version}}-${{matrix.os_arch}}-iso
+          path: C:\workspace\Windows_11_${{matrix.os_version}}_${{matrix.os_arch}}.iso
