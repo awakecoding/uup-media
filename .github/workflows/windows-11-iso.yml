@@ -12,9 +12,9 @@ jobs:
 
         include:
         - os_version: 22H2
-          os_build: 22621.1555
+          os_build: 22621.1992
         - os_version: 21H2
-          os_build: 22000.1817
+          os_build: 22000.2176
 
     steps:
       - name: Configure runner
