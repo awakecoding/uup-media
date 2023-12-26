@@ -7,14 +7,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os_version: [ 22H2, 21H2 ]
+        os_version: [ 23H2, 22H2 ]
         os_arch: [ x64, arm64 ]
 
         include:
+        - os_version: 23H2
+          os_build: 22621.2861
         - os_version: 22H2
-          os_build: 22621.1992
-        - os_version: 21H2
-          os_build: 22000.2176
+          os_build: 22621.2428
 
     steps:
       - name: Configure runner

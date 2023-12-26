@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os_build: [ 20348.1850 ]
+        os_build: [ 20348.2159 ]
 
     steps:
       - name: Configure runner
