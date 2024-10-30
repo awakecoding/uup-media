@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os_build: [ 20348.2159 ]
+        os_build: [ 20348.2762 ]
 
     steps:
       - name: Configure runner
@@ -15,14 +15,14 @@ jobs:
           docker system prune -a -f
           New-Item "C:\workspace" -ItemType Directory
 
-      - name: Clone project
-        uses: actions/checkout@v3
-
       - name: Download UUP Media Creator
         shell: pwsh
         run: |
-          Expand-Archive -Path .\tools\UUPMediaCreator.zip C:\UUPMediaCreator
-          echo "PATH=$Env:PATH;C:\UUPMediaCreator\CLI" >> $Env:GITHUB_ENV
+          $DownloadUrl = "https://github.com/gus33000/UUPMediaCreator/releases/download/v3.1.9.2/win-x64-binaries.zip"
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest $DownloadUrl -OutFile .\UUPMediaCreator.zip
+          Expand-Archive -Path .\UUPMediaCreator.zip C:\UUPMediaCreator
+          echo "PATH=$Env:PATH;C:\UUPMediaCreator" >> $Env:GITHUB_ENV
 
       - name: Download UUP files
         shell: pwsh
@@ -41,7 +41,7 @@ jobs:
           UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Windows_Server_2022_${OSBuild}.iso"
 
       - name: Upload Windows ISO
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows_Server_2022_${{matrix.os_build}}-iso
           path: C:\workspace\Windows_Server_2022_${{matrix.os_build}}.iso
