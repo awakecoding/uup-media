@@ -12,7 +12,7 @@ jobs:
 
         include:
         - os_version: 22H2
-          os_build: 19045.3208
+          os_build: 19044.5011
 
     steps:
       - name: Configure runner
@@ -23,11 +23,11 @@ jobs:
       - name: Download UUP Media Creator
         shell: pwsh
         run: |
-          $DownloadUrl = "https://github.com/gus33000/UUPMediaCreator/releases/download/v3.1.4.0/win-x64.zip"
+          $DownloadUrl = "https://github.com/gus33000/UUPMediaCreator/releases/download/v3.1.9.2/win-x64-binaries.zip"
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest $DownloadUrl -OutFile .\UUPMediaCreator.zip
           Expand-Archive -Path .\UUPMediaCreator.zip C:\UUPMediaCreator
-          echo "PATH=$Env:PATH;C:\UUPMediaCreator\CLI" >> $Env:GITHUB_ENV
+          echo "PATH=$Env:PATH;C:\UUPMediaCreator" >> $Env:GITHUB_ENV
 
       - name: Download UUP files
         shell: pwsh
@@ -49,7 +49,7 @@ jobs:
           UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Windows_10_${OSVersion}_${OSArch}.iso"
 
       - name: Upload Windows ISO
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows-10-${{matrix.os_version}}-${{matrix.os_arch}}-iso
           path: C:\workspace\Windows_10_${{matrix.os_version}}_${{matrix.os_arch}}.iso
