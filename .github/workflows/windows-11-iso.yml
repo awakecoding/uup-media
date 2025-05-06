@@ -55,7 +55,7 @@ jobs:
       - name: Download UUP Media Creator
         shell: pwsh
         run: |
-          $DownloadUrl = "https://github.com/gus33000/UUPMediaCreator/releases/download/v3.1.9.3/win-x64-binaries.zip"
+          $DownloadUrl = "https://github.com/gus33000/UUPMediaCreator/releases/download/v3.1.9.2/win-x64-binaries.zip"
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest $DownloadUrl -OutFile .\UUPMediaCreator.zip
           Expand-Archive -Path .\UUPMediaCreator.zip C:\UUPMediaCreator
