@@ -81,7 +81,7 @@ function Get-WindowsUpdateHistory {
     }
 
     $stableUpdates = $updates | Where-Object {
-        $_.Title -NotMatch 'Preview'
+        $_.Title -NotMatch 'Preview|Out-of-Band'
     } | Sort-Object Build -Descending
 
     return $stableUpdates
