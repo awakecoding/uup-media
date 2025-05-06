@@ -1,9 +1,9 @@
-name: Windows 2022 ISO
+name: Windows 2025 ISO
 on: workflow_dispatch
 jobs:
   build:
-    name: Windows 2022 ISO
-    runs-on: windows-2022
+    name: Windows 2025 ISO
+    runs-on: windows-2025
     strategy:
       fail-fast: false
       matrix:
@@ -17,7 +17,7 @@ jobs:
         shell: pwsh
         run: |
           . .\Get-WindowsUpdateHistory.ps1
-          $ChangeHistoryName = "Windows Server 2022"
+          $ChangeHistoryName = "Windows Server 2025"
           
           $OSBuild = '${{matrix.os_build}}'
           if ($OSBuild -eq 'latest') {
@@ -67,10 +67,10 @@ jobs:
         run: |
           $OSBuild = $Env:OS_BUILD
           $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
-          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Windows_Server_2022_${OSBuild}.iso"
+          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Windows_Server_2025_${OSBuild}.iso"
 
       - name: Upload Windows ISO
         uses: actions/upload-artifact@v4
         with:
-          name: Windows_Server_2022-iso
-          path: C:\workspace\Windows_Server_2022_${{ env.OS_BUILD }}.iso
+          name: Windows_Server_2025-iso
+          path: C:\workspace\Windows_Server_2025_${{ env.OS_BUILD }}.iso

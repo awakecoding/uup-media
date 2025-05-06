@@ -12,11 +12,41 @@ jobs:
 
         include:
         - os_version: 24H2
-          os_build: 26100.2033
+          os_build: latest
         - os_version: 23H2
-          os_build: 22621.4317
+          os_build: latest
 
     steps:
+      - name: Check out ${{ github.repository }}
+        uses: actions/checkout@v4
+
+      - name: Select Windows OS build
+        shell: pwsh
+        run: |
+          . .\Get-WindowsUpdateHistory.ps1
+          $OSVersion = '${{matrix.os_version}}'
+          $ChangeHistoryName = "Windows 11, version $OSVersion"
+          
+          $OSBuild = '${{matrix.os_build}}'
+          if ($OSBuild -eq 'latest') {
+            $WindowsUpdate = Get-WindowsUpdateHistory $ChangeHistoryName | Select-Object -First 1
+          } else {
+            $WindowsUpdate = Get-WindowsUpdateHistory $ChangeHistoryName | Where-Object { $_.Build -eq $OSBuild } | Select-Object -First 1
+          }
+
+          if (-Not $WindowsUpdate) {
+            throw "Could not find '$ChangeHistoryName' OS Build $OSBuild"
+          }
+
+          $OSBuild = $WindowsUpdate.Build
+          echo "OS_BUILD=$OSBuild" >> $Env:GITHUB_ENV
+
+          echo "::notice::Name: $ChangeHistoryName"
+          echo "::notice::Title: $($WindowsUpdate.Title)"
+          echo "::notice::Build: $($WindowsUpdate.Build)"
+          echo "::notice::KB: $($WindowsUpdate.KB)"
+          echo "::notice::Link: $($WindowsUpdate.Link)"
+
       - name: Configure runner
         run: |
           docker system prune -a -f
@@ -25,7 +55,7 @@ jobs:
       - name: Download UUP Media Creator
         shell: pwsh
         run: |
-          $DownloadUrl = "https://github.com/gus33000/UUPMediaCreator/releases/download/v3.1.9.2/win-x64-binaries.zip"
+          $DownloadUrl = "https://github.com/gus33000/UUPMediaCreator/releases/download/v3.1.9.3/win-x64-binaries.zip"
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest $DownloadUrl -OutFile .\UUPMediaCreator.zip
           Expand-Archive -Path .\UUPMediaCreator.zip C:\UUPMediaCreator
@@ -36,7 +66,7 @@ jobs:
         working-directory: C:\workspace
         run: |
           $OSArch = '${{matrix.os_arch}}'
-          $OSBuild = '${{matrix.os_build}}'
+          $OSBuild = $Env:OS_BUILD
           $MachineType = @{'x64'='amd64';'arm64'='arm64'}[$OSArch]
           $ReportingVersion = "10.0.${OSBuild}"
           UUPDownload.exe -s Professional -r Retail -b Retail -c vb_release -l en-US -t $MachineType -v $ReportingVersion
