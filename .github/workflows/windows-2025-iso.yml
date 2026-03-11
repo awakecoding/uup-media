@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Check out ${{ github.repository }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Select Windows OS build
         id: select_build
@@ -63,23 +63,44 @@ jobs:
         shell: pwsh
         working-directory: C:\workspace
         run: |
+          $ErrorActionPreference = 'Stop'
           $OSArch = '${{ steps.select_build.outputs.os_arch }}'
           $OSBuild = '${{ steps.select_build.outputs.os_build }}'
           $MachineType = @{'x64'='amd64';'arm64'='arm64'}[$OSArch]
           $ReportingVersion = "10.0.${OSBuild}"
           UUPDownload.exe -s StandardServer -r Retail -b Retail -c fe_release -l en-US -t $MachineType -v $ReportingVersion
 
+          if ($LASTEXITCODE -ne 0) {
+            throw "UUPDownload.exe failed with exit code $LASTEXITCODE for build $OSBuild and architecture $OSArch."
+          }
+
+          $UupPath = Get-Item .\10.0.*.*.* -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $UupPath) {
+            throw "UUPDownload.exe did not produce a UUP workspace directory for build $OSBuild and architecture $OSArch."
+          }
+
       - name: Create Windows ISO
         shell: pwsh
         working-directory: C:\workspace
         run: |
+          $ErrorActionPreference = 'Stop'
           $OSArch = '${{ steps.select_build.outputs.os_arch }}'
           $OSBuild = '${{ steps.select_build.outputs.os_build }}'
-          $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
-          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Windows_Server_2025_${OSBuild}_${OSArch}.iso"
+          $UupPath = Get-Item .\10.0.*.*.* -ErrorAction Stop | Select-Object -First 1 -ExpandProperty Name
+          $IsoPath = "C:\workspace\Windows_Server_2025_${OSBuild}_${OSArch}.iso"
+          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path $IsoPath
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "UUPMediaConverter.exe failed with exit code $LASTEXITCODE for build $OSBuild and architecture $OSArch."
+          }
+
+          if (-not (Test-Path -Path $IsoPath)) {
+            throw "UUPMediaConverter.exe completed without producing $IsoPath. The selected build or architecture is not convertible for this SKU/language combination."
+          }
 
       - name: Upload Windows ISO
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Windows_Server_2025-${{ steps.select_build.outputs.os_arch }}-iso
           path: C:\workspace\Windows_Server_2025_${{ steps.select_build.outputs.os_build }}_${{ steps.select_build.outputs.os_arch }}.iso
+          if-no-files-found: error
