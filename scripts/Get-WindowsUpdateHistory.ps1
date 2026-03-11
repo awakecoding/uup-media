@@ -3,9 +3,10 @@ param (
     [ValidateSet(
         'Windows Server 2025',
         'Windows Server 2022',
+        'Windows 11, version 26H1',
+        'Windows 11, version 25H2',
         'Windows 11, version 24H2',
         'Windows 11, version 23H2',
-        'Windows 10, version 22H2',
         'Windows Server, version 23H2'
     )]
     [string] $Name,
@@ -26,6 +27,16 @@ $script:WindowsUpdateSources = [ordered]@{
         Url            = 'https://learn.microsoft.com/en-us/windows-server/get-started/windows-server-release-info'
         SectionHeading = 'Windows Server 2022'
     }
+    'Windows 11, version 26H1' = @{
+        Type                 = 'SupportArticle'
+        Url                  = 'https://support.microsoft.com/en-us/help/5079670'
+        PreferredBuildPrefix = '28000.'
+    }
+    'Windows 11, version 25H2' = @{
+        Type                 = 'SupportArticle'
+        Url                  = 'https://support.microsoft.com/en-us/help/5065323'
+        PreferredBuildPrefix = '26200.'
+    }
     'Windows 11, version 24H2' = @{
         Type                 = 'SupportArticle'
         Url                  = 'https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5'
@@ -35,11 +46,6 @@ $script:WindowsUpdateSources = [ordered]@{
         Type                 = 'SupportArticle'
         Url                  = 'https://support.microsoft.com/en-us/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434'
         PreferredBuildPrefix = '22631.'
-    }
-    'Windows 10, version 22H2' = @{
-        Type                 = 'SupportArticle'
-        Url                  = 'https://support.microsoft.com/en-us/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562'
-        PreferredBuildPrefix = '19045.'
     }
     'Windows Server, version 23H2' = @{
         Type                 = 'SupportArticle'
@@ -251,9 +257,10 @@ function Get-WindowsUpdateHistory {
         [ValidateSet(
             'Windows Server 2025',
             'Windows Server 2022',
+            'Windows 11, version 26H1',
+            'Windows 11, version 25H2',
             'Windows 11, version 24H2',
             'Windows 11, version 23H2',
-            'Windows 10, version 22H2',
             'Windows Server, version 23H2'
         )]
         [string] $Name

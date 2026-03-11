@@ -16,14 +16,14 @@ GitHub Actions workflows for building Windows ISO images from UUP packages with 
 - `.github/workflows/windows-2025-iso.yml`: builds Windows Server 2025 ISO artifacts.
 - `.github/workflows/windows-2022-iso.yml`: builds Windows Server 2022 ISO artifacts.
 - `.github/workflows/windows-11-iso.yml`: builds Windows 11 ISO artifacts.
-- `.github/workflows/windows-10-iso.yml`: builds Windows 10 ISO artifacts.
 
 ## Data sources
 
 - Windows Server 2025 and Windows Server 2022: `https://learn.microsoft.com/en-us/windows-server/get-started/windows-server-release-info`
+- Windows 11 26H1: `https://support.microsoft.com/en-us/help/5079670`
+- Windows 11 25H2: `https://support.microsoft.com/en-us/help/5065323`
 - Windows 11 24H2: `https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5`
 - Windows 11 23H2: `https://support.microsoft.com/en-us/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434`
-- Windows 10 22H2: `https://support.microsoft.com/en-us/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562`
 - Windows Server, version 23H2: `https://support.microsoft.com/en-us/help/5031680`
 
 ## Local usage

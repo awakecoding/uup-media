@@ -8,7 +8,7 @@ The main maintenance risk is build-number drift when Microsoft updates release h
 ## Source of truth
 
 - Use the Windows Server Learn release-history page for Windows Server 2025 and Windows Server 2022.
-- Use the product-specific Microsoft support update history pages for Windows 10, Windows 11, and Windows Server, version 23H2.
+- Use the product-specific Microsoft support update history pages for Windows 11 and Windows Server, version 23H2.
 - Do not add the `WindowsReleaseInformation` PowerShell Gallery module here unless it gains first-class Windows Server coverage.
 
 ## Important files
@@ -19,7 +19,6 @@ The main maintenance risk is build-number drift when Microsoft updates release h
 - `.github/workflows/windows-2025-iso.yml`: manual workflow for Windows Server 2025, now with `os_arch` and `os_build` inputs.
 - `.github/workflows/windows-2022-iso.yml`: manual workflow for Windows Server 2022, with `os_build` input.
 - `.github/workflows/windows-11-iso.yml`: Windows 11 workflow.
-- `.github/workflows/windows-10-iso.yml`: Windows 10 workflow.
 
 ## Change guidelines
 

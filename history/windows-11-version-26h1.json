@@ -1,0 +1,29 @@
+{
+  "Name": "Windows 11, version 26H1",
+  "GeneratedAtUtc": "2026-03-11T15:51:29.2714189Z",
+  "UpdateCount": 2,
+  "Updates": [
+    {
+      "Name": "Windows 11, version 26H1",
+      "Title": "March 10, 2026—KB5079466 (OS Build 28000.1719)",
+      "KB": "KB5079466",
+      "Build": "28000.1719",
+      "Link": "https://support.microsoft.com/en-us/help/5079466",
+      "UpdateType": "",
+      "ReleaseDate": "March 10, 2026",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows 11, version 26H1",
+      "Title": "February 10, 2026—KB5077179 (OS Build 28000.1575)",
+      "KB": "KB5077179",
+      "Build": "28000.1575",
+      "Link": "https://support.microsoft.com/en-us/help/5077179",
+      "UpdateType": "",
+      "ReleaseDate": "February 10, 2026",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    }
+  ]
+}

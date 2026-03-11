@@ -7,10 +7,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os_version: [ 24H2, 23H2 ]
+        os_version: [ 26H1, 25H2, 24H2, 23H2 ]
         os_arch: [ x64, arm64 ]
 
         include:
+        - os_version: 26H1
+          os_build: latest
+        - os_version: 25H2
+          os_build: latest
         - os_version: 24H2
           os_build: latest
         - os_version: 23H2

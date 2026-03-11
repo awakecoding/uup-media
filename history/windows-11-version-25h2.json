@@ -1,0 +1,106 @@
+{
+  "Name": "Windows 11, version 25H2",
+  "GeneratedAtUtc": "2026-03-11T15:51:29.2714189Z",
+  "UpdateCount": 9,
+  "Updates": [
+    {
+      "Name": "Windows 11, version 25H2",
+      "Title": "March 10, 2026—KB5079473 (OS Builds 26200.8037 and 26100.8037)",
+      "KB": "KB5079473",
+      "Build": "26200.8037",
+      "Link": "https://support.microsoft.com/en-us/help/5079473",
+      "UpdateType": "",
+      "ReleaseDate": "March 10, 2026",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows 11, version 25H2",
+      "Title": "February 10, 2026—KB5077181 (OS Builds 26200.7840 and 26100.7840)",
+      "KB": "KB5077181",
+      "Build": "26200.7840",
+      "Link": "https://support.microsoft.com/en-us/help/5077181",
+      "UpdateType": "",
+      "ReleaseDate": "February 10, 2026",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows 11, version 25H2",
+      "Title": "January 24, 2026—KB5078127 (OS Builds 26200.7628 and 26100.7628) Out-of-band",
+      "KB": "KB5078127",
+      "Build": "26200.7628",
+      "Link": "https://support.microsoft.com/en-us/help/5078127",
+      "UpdateType": "",
+      "ReleaseDate": "January 24, 2026",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows 11, version 25H2",
+      "Title": "January 17, 2026—KB5077744 (OS Builds 26200.7627 and 26100.7627) Out-of-band",
+      "KB": "KB5077744",
+      "Build": "26200.7627",
+      "Link": "https://support.microsoft.com/en-us/help/5077744",
+      "UpdateType": "",
+      "ReleaseDate": "January 17, 2026",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows 11, version 25H2",
+      "Title": "January 13, 2026—KB5074109 (OS Builds 26200.7623 and 26100.7623)",
+      "KB": "KB5074109",
+      "Build": "26200.7623",
+      "Link": "https://support.microsoft.com/en-us/help/5074109",
+      "UpdateType": "",
+      "ReleaseDate": "January 13, 2026",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows 11, version 25H2",
+      "Title": "December 9, 2025—KB5072033 (OS Builds 26200.7462 and 26100.7462)",
+      "KB": "KB5072033",
+      "Build": "26200.7462",
+      "Link": "https://support.microsoft.com/en-us/help/5072033",
+      "UpdateType": "",
+      "ReleaseDate": "December 9, 2025",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows 11, version 25H2",
+      "Title": "November 11, 2025—KB5068861 (OS Builds 26200.7171 and 26100.7171)",
+      "KB": "KB5068861",
+      "Build": "26200.7171",
+      "Link": "https://support.microsoft.com/en-us/help/5068861",
+      "UpdateType": "",
+      "ReleaseDate": "November 11, 2025",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows 11, version 25H2",
+      "Title": "October 20, 2025—KB5070773 (OS Builds 26200.6901 and 26100.6901) Out-of-band",
+      "KB": "KB5070773",
+      "Build": "26200.6901",
+      "Link": "https://support.microsoft.com/en-us/help/5070773",
+      "UpdateType": "",
+      "ReleaseDate": "October 20, 2025",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows 11, version 25H2",
+      "Title": "October 14, 2025—KB5066835 (OS Builds 26200.6899 and 26100.6899)",
+      "KB": "KB5066835",
+      "Build": "26200.6899",
+      "Link": "https://support.microsoft.com/en-us/help/5066835",
+      "UpdateType": "",
+      "ReleaseDate": "October 14, 2025",
+      "Source": "SupportArticle",
+      "IsPreview": false
+    }
+  ]
+}
