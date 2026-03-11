@@ -68,7 +68,7 @@ jobs:
           $OSBuild = '${{ steps.select_build.outputs.os_build }}'
           $MachineType = @{'x64'='amd64';'arm64'='arm64'}[$OSArch]
           $ReportingVersion = "10.0.${OSBuild}"
-          UUPDownload.exe -s StandardServer -r Retail -b Retail -c fe_release -l en-US -t $MachineType -v $ReportingVersion
+          UUPDownload.exe -s StandardServer -r Retail -b Retail -c fe_release -l en-US -t $MachineType -v $ReportingVersion -y
 
           if ($LASTEXITCODE -ne 0) {
             throw "UUPDownload.exe failed with exit code $LASTEXITCODE for build $OSBuild and architecture $OSArch."

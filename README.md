@@ -49,6 +49,15 @@ Export full history snapshots for every supported product into `history/`:
 Get-ChildItem .\history\*.json
 ```
 
+Probe exact UUP builds locally from newest to older ones without waiting for a full ISO build:
+
+```powershell
+.\scripts\Find-UupConvertibleBuild.ps1 -Name 'Windows Server 2025' -Architecture arm64 -MaxCandidates 4
+```
+
+The probe script uses `UUPDownload.exe -y`, which matters: without `-y`, the `-v` value is only a lower bound and UUP can drift to a newer build than the one you asked to test.
+By default it only tries monthly `B` releases, reuses any existing per-build workspace under `%TEMP%\uup-build-probe`, and stops as soon as a build passes the metadata gate.
+
 ## GitHub Actions usage
 
 Windows Server 2025 can now be dispatched with an explicit architecture and build:
@@ -68,3 +77,4 @@ gh workflow run windows-2022-iso.yml -f os_build=20348.4893
 The workflow is wired to try `arm64` by passing `-t arm64` to `UUPDownload.exe` for `StandardServer` on `fe_release`.
 Whether that succeeds depends on Microsoft publishing matching UUP packages for that SKU and architecture.
 If packages are unavailable, the workflow should fail during the UUP download step rather than during build selection.
+Local exact-build probes against `26100.32522` and `26100.1742` showed that build-number trial and error is not the only issue for Server 2025 media: the downloaded Server UUP sets can lack neutral edition packages or a valid edition composition database, which makes `UUPMediaConverter` fail before real ISO creation starts.

@@ -55,7 +55,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $OSBuild = '${{ steps.select_build.outputs.os_build }}'
           $ReportingVersion = "10.0.${OSBuild}"
-          UUPDownload.exe -s StandardServer -r Retail -b Retail -c fe_release -l en-US -t amd64 -v $ReportingVersion
+          UUPDownload.exe -s StandardServer -r Retail -b Retail -c fe_release -l en-US -t amd64 -v $ReportingVersion -y
 
           if ($LASTEXITCODE -ne 0) {
             throw "UUPDownload.exe failed with exit code $LASTEXITCODE for build $OSBuild."
