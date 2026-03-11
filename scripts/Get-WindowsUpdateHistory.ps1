@@ -1,3 +1,20 @@
+[CmdletBinding()]
+param (
+    [ValidateSet(
+        'Windows Server 2025',
+        'Windows Server 2022',
+        'Windows 11, version 24H2',
+        'Windows 11, version 23H2',
+        'Windows 10, version 22H2',
+        'Windows Server, version 23H2'
+    )]
+    [string] $Name,
+
+    [string] $Build = 'latest',
+
+    [string] $OutputPath
+)
+
 $script:WindowsUpdateSources = [ordered]@{
     'Windows Server 2025' = @{
         Type           = 'ServerReleaseInfo'
@@ -10,20 +27,24 @@ $script:WindowsUpdateSources = [ordered]@{
         SectionHeading = 'Windows Server 2022'
     }
     'Windows 11, version 24H2' = @{
-        Type = 'SupportArticle'
-        Url  = 'https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5'
+        Type                 = 'SupportArticle'
+        Url                  = 'https://support.microsoft.com/en-us/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5'
+        PreferredBuildPrefix = '26100.'
     }
     'Windows 11, version 23H2' = @{
-        Type = 'SupportArticle'
-        Url  = 'https://support.microsoft.com/en-us/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434'
+        Type                 = 'SupportArticle'
+        Url                  = 'https://support.microsoft.com/en-us/topic/windows-11-version-23h2-update-history-59875222-b990-4bd9-932f-91a5954de434'
+        PreferredBuildPrefix = '22631.'
     }
     'Windows 10, version 22H2' = @{
-        Type = 'SupportArticle'
-        Url  = 'https://support.microsoft.com/en-us/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562'
+        Type                 = 'SupportArticle'
+        Url                  = 'https://support.microsoft.com/en-us/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562'
+        PreferredBuildPrefix = '19045.'
     }
     'Windows Server, version 23H2' = @{
-        Type = 'SupportArticle'
-        Url  = 'https://support.microsoft.com/en-us/help/5031680'
+        Type                 = 'SupportArticle'
+        Url                  = 'https://support.microsoft.com/en-us/help/5031680'
+        PreferredBuildPrefix = '25398.'
     }
 }
 
@@ -82,44 +103,75 @@ function Get-SupportArticleUpdates {
     $response = Invoke-WebRequest -Uri $Definition.Url -UseBasicParsing
     $html = $response.Content
     $regexOptions = [System.Text.RegularExpressions.RegexOptions]::Singleline -bor [System.Text.RegularExpressions.RegexOptions]::IgnoreCase
-    $targetList = $null
+    $expectedTitles = @(
+        $Name,
+        "$Name update history"
+    )
 
+    $linkMatches = @()
     foreach ($listMatch in [regex]::Matches($html, '<ul\s+class="supLeftNavArticles"[^>]*>.*?</ul>', $regexOptions)) {
-        $linkMatches = [regex]::Matches($listMatch.Value, '<a[^>]+href="(?<href>[^"]+)"[^>]*>(?<text>.*?)</a>', $regexOptions)
-        if ($linkMatches.Count -eq 0) {
+        $listLinks = [regex]::Matches($listMatch.Value, '<a[^>]+href="(?<href>[^"]+)"[^>]*>(?<text>.*?)</a>', $regexOptions)
+        if ($listLinks.Count -eq 0) {
             continue
         }
 
-        $firstTitle = ConvertFrom-HtmlText $linkMatches[0].Groups['text'].Value
-        if ($firstTitle -eq $Name) {
-            $targetList = $linkMatches
-            break
+        $firstTitle = ConvertFrom-HtmlText $listLinks[0].Groups['text'].Value
+        if ($expectedTitles -contains $firstTitle) {
+            $linkMatches += $listLinks
         }
     }
 
-    if (-not $targetList) {
-        throw "No matching update list found for '$Name' at $($Definition.Url)."
+    if ($linkMatches.Count -eq 0) {
+        $linkMatches = [regex]::Matches($html, '<a[^>]+href="(?<href>[^"]+)"[^>]*>(?<text>.*?)</a>', $regexOptions)
     }
 
-    $updates = foreach ($linkMatch in $targetList) {
+    $updates = foreach ($linkMatch in $linkMatches) {
         $title = ConvertFrom-HtmlText $linkMatch.Groups['text'].Value
-        if ($title -notmatch 'KB(?<kb>\d+).*?OS Build (?<build>\d{5}\.\d+)') {
+        if ($title -notmatch 'KB(?<kb>\d+)') {
             continue
+        }
+
+        $kb = "KB$($matches['kb'])"
+
+        if ($title -notmatch 'OS Build(?:s)?') {
+            continue
+        }
+
+        $buildMatches = [regex]::Matches($title, '\d{5}\.\d+')
+        if ($buildMatches.Count -eq 0) {
+            continue
+        }
+
+        $candidateBuilds = $buildMatches | ForEach-Object { [version] $_.Value }
+        if ($Definition.PreferredBuildPrefix) {
+            $preferredBuilds = $candidateBuilds | Where-Object { $_.ToString().StartsWith($Definition.PreferredBuildPrefix) }
+            if ($preferredBuilds) {
+                $candidateBuilds = $preferredBuilds
+            }
+        }
+
+        $selectedBuild = $candidateBuilds | Sort-Object -Descending | Select-Object -First 1
+        $releaseDate = $null
+        if ($title -match '^(?<date>[A-Za-z]+\s+\d{1,2},\s+\d{4})') {
+            $releaseDate = $matches['date']
         }
 
         [PSCustomObject]@{
             Title            = $title
-            KB               = "KB$($matches['kb'])"
-            Build            = [version]$matches['build']
+            KB               = $kb
+            Build            = $selectedBuild
             Link             = Resolve-UpdateLink -Href $linkMatch.Groups['href'].Value -BaseUrl $Definition.Url
             UpdateType       = $null
-            AvailabilityDate = $null
+            ReleaseDate      = $releaseDate
             Source           = 'SupportArticle'
             IsPreview        = $title -match 'Preview'
         }
     }
 
-    return $updates | Where-Object { -not $_.IsPreview } | Sort-Object Build -Descending
+    return $updates |
+        Where-Object { -not $_.IsPreview } |
+        Sort-Object Link -Unique |
+        Sort-Object Build -Descending
 }
 
 function Get-ServerReleaseInfoUpdates {
@@ -183,7 +235,7 @@ function Get-ServerReleaseInfoUpdates {
             Build            = [version]$buildText
             Link             = Resolve-UpdateLink -Href $hrefMatch.Groups['href'].Value -BaseUrl $Definition.Url
             UpdateType       = $updateType
-            AvailabilityDate = $cells[2]
+            ReleaseDate      = $cells[2]
             Source           = 'WindowsServerReleaseInfo'
             IsPreview        = $updateType -match '\sD$' -or $updateType -match 'Preview'
         }
@@ -222,5 +274,94 @@ function Get-WindowsUpdateHistory {
         default {
             throw "Unsupported source type '$($definition.Type)' for '$Name'."
         }
+    }
+}
+
+function Get-SupportedWindowsUpdateHistoryNames {
+    [CmdletBinding()]
+    param ()
+
+    return $script:WindowsUpdateSources.Keys
+}
+
+function Select-WindowsUpdate {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $Name,
+
+        [string] $Build = 'latest'
+    )
+
+    $updates = Get-WindowsUpdateHistory -Name $Name
+    if ($Build -eq 'latest') {
+        $selectedUpdate = $updates | Select-Object -First 1
+    } else {
+        $selectedUpdate = $updates | Where-Object { $_.Build.ToString() -eq $Build } | Select-Object -First 1
+    }
+
+    if (-not $selectedUpdate) {
+        throw "Could not find '$Name' OS Build $Build"
+    }
+
+    return $selectedUpdate
+}
+
+function ConvertTo-WindowsUpdateJsonRecord {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $Name,
+
+        [Parameter(Mandatory = $true)]
+        [psobject] $Update
+    )
+
+    return [PSCustomObject]@{
+        Name             = $Name
+        Title            = [string] $Update.Title
+        KB               = [string] $Update.KB
+        Build            = $Update.Build.ToString()
+        Link             = [string] $Update.Link
+        UpdateType       = [string] $Update.UpdateType
+        ReleaseDate      = [string] $Update.ReleaseDate
+        Source           = [string] $Update.Source
+        IsPreview        = [bool] $Update.IsPreview
+    }
+}
+
+function Export-WindowsUpdateHistoryJson {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $Name,
+
+        [Parameter(Mandatory = $true)]
+        [psobject] $Update,
+
+        [Parameter(Mandatory = $true)]
+        [string] $OutputPath
+    )
+
+    $record = ConvertTo-WindowsUpdateJsonRecord -Name $Name -Update $Update
+    $directory = Split-Path -Path $OutputPath -Parent
+    if ($directory) {
+        New-Item -Path $directory -ItemType Directory -Force | Out-Null
+    }
+
+    $record | ConvertTo-Json -Depth 3 | Set-Content -Path $OutputPath -Encoding utf8
+    return $record
+}
+
+if ($PSBoundParameters.ContainsKey('OutputPath') -and -not $PSBoundParameters.ContainsKey('Name')) {
+    throw 'The Name parameter is required when OutputPath is specified.'
+}
+
+if ($PSBoundParameters.ContainsKey('Name')) {
+    $selectedUpdate = Select-WindowsUpdate -Name $Name -Build $Build
+    if ($PSBoundParameters.ContainsKey('OutputPath')) {
+        Export-WindowsUpdateHistoryJson -Name $Name -Update $selectedUpdate -OutputPath $OutputPath
+    } else {
+        ConvertTo-WindowsUpdateJsonRecord -Name $Name -Update $selectedUpdate
     }
 }

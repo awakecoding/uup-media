@@ -28,27 +28,18 @@ jobs:
         id: select_build
         shell: pwsh
         run: |
-          . .\Get-WindowsUpdateHistory.ps1
           $ChangeHistoryName = "Windows Server 2025"
           $OSArch = '${{ inputs.os_arch }}'
-          
-          $OSBuild = '${{ inputs.os_build }}'
-          if ($OSBuild -eq 'latest') {
-            $WindowsUpdate = Get-WindowsUpdateHistory $ChangeHistoryName | Select-Object -First 1
-          } else {
-            $WindowsUpdate = Get-WindowsUpdateHistory $ChangeHistoryName | Where-Object { $_.Build -eq $OSBuild } | Select-Object -First 1
-          }
-
-          if (-Not $WindowsUpdate) {
-            throw "Could not find '$ChangeHistoryName' OS Build $OSBuild"
-          }
-
+          $UpdateJsonPath = Join-Path $Env:RUNNER_TEMP 'windows-server-2025-update.json'
+          .\scripts\Get-WindowsUpdateHistory.ps1 -Name $ChangeHistoryName -Build '${{ inputs.os_build }}' -OutputPath $UpdateJsonPath | Out-Null
+          $WindowsUpdate = Get-Content $UpdateJsonPath -Raw | ConvertFrom-Json
           $OSBuild = $WindowsUpdate.Build
           "os_build=$OSBuild" >> $Env:GITHUB_OUTPUT
           "os_arch=$OSArch" >> $Env:GITHUB_OUTPUT
 
           echo "::notice::Name: $ChangeHistoryName"
           echo "::notice::Architecture: $OSArch"
+          echo "::notice::Metadata: $UpdateJsonPath"
           echo "::notice::Title: $($WindowsUpdate.Title)"
           echo "::notice::Build: $($WindowsUpdate.Build)"
           echo "::notice::KB: $($WindowsUpdate.KB)"

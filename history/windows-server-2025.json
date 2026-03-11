@@ -1,0 +1,293 @@
+{
+  "Name": "Windows Server 2025",
+  "GeneratedAtUtc": "2026-03-11T15:40:01.9670007Z",
+  "UpdateCount": 26,
+  "Updates": [
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5078740 (OS Build 26100.32522)",
+      "KB": "KB5078740",
+      "Build": "26100.32522",
+      "Link": "https://support.microsoft.com/help/5078740",
+      "UpdateType": "2026-03 B",
+      "ReleaseDate": "2026-03-10",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5075899 (OS Build 26100.32370)",
+      "KB": "KB5075899",
+      "Build": "26100.32370",
+      "Link": "https://support.microsoft.com/help/5075899",
+      "UpdateType": "2026-02 B",
+      "ReleaseDate": "2026-02-10",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5078135 (OS Build 26100.32236)",
+      "KB": "KB5078135",
+      "Build": "26100.32236",
+      "Link": "https://support.microsoft.com/help/5078135",
+      "UpdateType": "2026-01 OOB",
+      "ReleaseDate": "2026-01-24",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5077793 (OS Build 26100.32234)",
+      "KB": "KB5077793",
+      "Build": "26100.32234",
+      "Link": "https://support.microsoft.com/help/5077793",
+      "UpdateType": "2026-01 OOB",
+      "ReleaseDate": "2026-01-17",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5073379 (OS Build 26100.32230)",
+      "KB": "KB5073379",
+      "Build": "26100.32230",
+      "Link": "https://support.microsoft.com/help/5073379",
+      "UpdateType": "2026-01 B",
+      "ReleaseDate": "2026-01-13",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5072033 (OS Build 26100.7462)",
+      "KB": "KB5072033",
+      "Build": "26100.7462",
+      "Link": "https://support.microsoft.com/topic/december-9-2025-kb5072033-os-build-26100-7462-fca31d8d-5fe8-4b5e-9591-6641ef1d26a1",
+      "UpdateType": "2025-12 B",
+      "ReleaseDate": "2025-12-09",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5072359 (OS Build 26100.7178)",
+      "KB": "KB5072359",
+      "Build": "26100.7178",
+      "Link": "https://support.microsoft.com/topic/november-18-2025-kb5072359-os-build-26100-7178-out-of-band-4c7a1771-0a7d-4652-a5fa-c24b1828faf2",
+      "UpdateType": "2025-11 OOB",
+      "ReleaseDate": "2025-11-18",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5068861 (OS Build 26100.7171)",
+      "KB": "KB5068861",
+      "Build": "26100.7171",
+      "Link": "https://support.microsoft.com/topic/november-11-2025-kb5068861-os-build-26100-7171-24e553d1-2338-433e-9cc3-61733148530c",
+      "UpdateType": "2025-11 B",
+      "ReleaseDate": "2025-11-11",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5070881 (OS Build 26100.6905)",
+      "KB": "KB5070881",
+      "Build": "26100.6905",
+      "Link": "https://support.microsoft.com/help/5070881",
+      "UpdateType": "2025-10 OOB",
+      "ReleaseDate": "2025-10-23",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5070773 (OS Build 26100.6901)",
+      "KB": "KB5070773",
+      "Build": "26100.6901",
+      "Link": "https://support.microsoft.com/topic/october-20-2025-kb5070773-os-build-26100-6901-out-of-band-f8effaa1-1c73-41e5-bcb3-e58a46c7601e",
+      "UpdateType": "2025-10 OOB",
+      "ReleaseDate": "2025-10-20",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5066835 (OS Build 26100.6899)",
+      "KB": "KB5066835",
+      "Build": "26100.6899",
+      "Link": "https://support.microsoft.com/topic/october-14-2025-kb5066835-os-build-26100-6899-6cdcc1c3-cfbf-41a3-8f0d-0c4a9d2b7d1e",
+      "UpdateType": "2025-10 B",
+      "ReleaseDate": "2025-10-14",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5068221 (OS Build 26100.6588)",
+      "KB": "KB5068221",
+      "Build": "26100.6588",
+      "Link": "https://support.microsoft.com/topic/september-22-2025-kb5068221-os-build-26100-6588-out-of-band-b6d4bce9-2976-4b1d-979b-d41967aca840",
+      "UpdateType": "2025-09 OOB",
+      "ReleaseDate": "2025-09-22",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5065426 (OS Build 26100.6584)",
+      "KB": "KB5065426",
+      "Build": "26100.6584",
+      "Link": "https://support.microsoft.com/topic/september-9-2025-kb5065426-update-for-windows-server-2025-os-build-26100-6584-6a59dc6a-1ff2-48f4-b375-81e93deee5dd",
+      "UpdateType": "2025-09 B",
+      "ReleaseDate": "2025-09-09",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5063878 (OS Build 26100.4946)",
+      "KB": "KB5063878",
+      "Build": "26100.4946",
+      "Link": "https://support.microsoft.com/en-us/topic/august-12-2025-kb5063878-update-for-windows-server-2025-os-build-26100-4946-69b2de20-e07d-404a-a19f-fd8c4ae27e0f",
+      "UpdateType": "2025-08 B",
+      "ReleaseDate": "2025-08-12",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5064489 (OS Build 26100.4656)",
+      "KB": "KB5064489",
+      "Build": "26100.4656",
+      "Link": "https://support.microsoft.com/topic/july-13-2025-kb5064489-os-build-26100-4656-out-of-band-6d701323-0247-482a-98ae-6b23032fa45f",
+      "UpdateType": "2025-07 OOB",
+      "ReleaseDate": "2025-07-13",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5062553 (OS Build 26100.4652)",
+      "KB": "KB5062553",
+      "Build": "26100.4652",
+      "Link": "https://support.microsoft.com/topic/july-8-2025-kb5062553-os-build-26100-4652-0e8c636a-7712-4936-9c76-ece21a38cf9a",
+      "UpdateType": "2025-07 B",
+      "ReleaseDate": "2025-07-08",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5060842 (OS Build 26100.4349)",
+      "KB": "KB5060842",
+      "Build": "26100.4349",
+      "Link": "https://support.microsoft.com/topic/june-10-2025-kb5060842-os-build-26100-4349-d7d4793c-bb41-4e4a-bfbd-a0dbdb2f6055",
+      "UpdateType": "2025-06 B",
+      "ReleaseDate": "2025-06-10",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5061977 (OS Build 26100.4066)",
+      "KB": "KB5061977",
+      "Build": "26100.4066",
+      "Link": "https://support.microsoft.com/topic/may-27-2025-kb5061977-os-build-26100-4066-out-of-band-80725b43-c0a1-48a4-9b82-058efffb6228",
+      "UpdateType": "2025-05 OOB",
+      "ReleaseDate": "2025-05-27",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5058411 (OS Build 26100.4061)",
+      "KB": "KB5058411",
+      "Build": "26100.4061",
+      "Link": "https://support.microsoft.com/topic/may-13-2025-kb5058411-os-build-26100-4061-57181688-a692-49e5-b6cd-6e3919da12ca",
+      "UpdateType": "2025-05 B",
+      "ReleaseDate": "2025-05-13",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5059087 (OS Build 26100.3781)",
+      "KB": "KB5059087",
+      "Build": "26100.3781",
+      "Link": "https://support.microsoft.com/topic/april-16-2025-kb5059087-os-build-26100-3781-out-of-band-28af76fc-36e5-49bc-9447-201cfadd9d97",
+      "UpdateType": "2025-04 OOB",
+      "ReleaseDate": "2025-04-16",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5055523 (OS Build 26100.3775)",
+      "KB": "KB5055523",
+      "Build": "26100.3775",
+      "Link": "https://support.microsoft.com/topic/april-8-2025-kb5055523-os-build-26100-3775-348facce-4988-4c6a-8cb9-50cab59fd385",
+      "UpdateType": "2025-04 B",
+      "ReleaseDate": "2025-04-08",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5053598 (OS Build 26100.3476)",
+      "KB": "KB5053598",
+      "Build": "26100.3476",
+      "Link": "https://support.microsoft.com/topic/march-11-2025-kb5053598-os-build-26100-3476-183947b8-4a0c-429a-8c6a-3f0d1b4f02f3",
+      "UpdateType": "2025-03 B",
+      "ReleaseDate": "2025-03-11",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5051987 (OS Build 26100.3194)",
+      "KB": "KB5051987",
+      "Build": "26100.3194",
+      "Link": "https://support.microsoft.com/topic/february-11-2025-kb5051987-os-build-26100-3194-6cc1a435-9c1a-42b8-8c4d-b34253784452",
+      "UpdateType": "2025-02 B",
+      "ReleaseDate": "2025-02-11",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5050009 (OS Build 26100.2894)",
+      "KB": "KB5050009",
+      "Build": "26100.2894",
+      "Link": "https://support.microsoft.com/topic/january-14-2025-kb5050009-os-build-26100-2894-d78f27bc-6405-461f-a525-2d1dc4e45759",
+      "UpdateType": "2025-01 B",
+      "ReleaseDate": "2025-01-14",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5048667 (OS Build 26100.2605)",
+      "KB": "KB5048667",
+      "Build": "26100.2605",
+      "Link": "https://support.microsoft.com/topic/december-10-2024-kb5048667-os-build-26100-2605-eb529853-d3a2-4c8d-bd0b-5fc6becb629c",
+      "UpdateType": "2024-12 B",
+      "ReleaseDate": "2024-12-10",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    },
+    {
+      "Name": "Windows Server 2025",
+      "Title": "Windows Server 2025 KB5046617 (OS Build 26100.2314)",
+      "KB": "KB5046617",
+      "Build": "26100.2314",
+      "Link": "https://support.microsoft.com/topic/november-12-2024-kb5046617-os-build-26100-2314-701f76d0-1127-43f5-a554-f562a940bc17",
+      "UpdateType": "2024-11 B",
+      "ReleaseDate": "2024-11-12",
+      "Source": "WindowsServerReleaseInfo",
+      "IsPreview": false
+    }
+  ]
+}

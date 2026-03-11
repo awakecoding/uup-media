@@ -13,7 +13,9 @@ The main maintenance risk is build-number drift when Microsoft updates release h
 
 ## Important files
 
-- `Get-WindowsUpdateHistory.ps1`: lookup logic for supported products.
+- `scripts/Get-WindowsUpdateHistory.ps1`: lookup logic for supported products and JSON export entry point.
+- `scripts/Export-WindowsUpdateHistory.ps1`: snapshot exporter for the full usable history of all supported products.
+- `history/`: checked-in JSON snapshots generated from live data for review and diffing.
 - `.github/workflows/windows-2025-iso.yml`: manual workflow for Windows Server 2025, now with `os_arch` and `os_build` inputs.
 - `.github/workflows/windows-2022-iso.yml`: manual workflow for Windows Server 2022, with `os_build` input.
 - `.github/workflows/windows-11-iso.yml`: Windows 11 workflow.
@@ -28,5 +30,6 @@ The main maintenance risk is build-number drift when Microsoft updates release h
 
 ## Verification
 
-- Dot-source `Get-WindowsUpdateHistory.ps1` and verify at least `Windows Server 2025`, `Windows Server 2022`, and one desktop product.
+- Run `scripts/Get-WindowsUpdateHistory.ps1 -Name 'Windows Server 2025' -OutputPath <path>` and verify the JSON output, then dot-source `scripts/Get-WindowsUpdateHistory.ps1` and verify at least `Windows Server 2022` and one desktop product.
+- Run `scripts/Export-WindowsUpdateHistory.ps1` and verify the expected files are written under `history/`.
 - If changing the Windows Server 2025 workflow, test the lookup path first, then attempt an `arm64` dispatch or a local `UUPDownload.exe` probe.

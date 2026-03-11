@@ -11,7 +11,8 @@ GitHub Actions workflows for building Windows ISO images from UUP packages with 
 
 ## Files
 
-- `Get-WindowsUpdateHistory.ps1`: resolves the latest non-preview build for the supported Windows products.
+- `scripts/Get-WindowsUpdateHistory.ps1`: resolves the latest non-preview build for the supported Windows products and can write the selected result to JSON.
+- `scripts/Export-WindowsUpdateHistory.ps1`: exports the full usable history for all supported products into snapshot JSON files under `history/`.
 - `.github/workflows/windows-2025-iso.yml`: builds Windows Server 2025 ISO artifacts.
 - `.github/workflows/windows-2022-iso.yml`: builds Windows Server 2022 ISO artifacts.
 - `.github/workflows/windows-11-iso.yml`: builds Windows 11 ISO artifacts.
@@ -27,18 +28,25 @@ GitHub Actions workflows for building Windows ISO images from UUP packages with 
 
 ## Local usage
 
-Query the latest usable Windows Server 2025 build:
+Write the latest usable Windows Server 2025 build to a JSON file:
 
 ```powershell
-. .\Get-WindowsUpdateHistory.ps1
-Get-WindowsUpdateHistory 'Windows Server 2025' | Select-Object -First 5
+.\scripts\Get-WindowsUpdateHistory.ps1 -Name 'Windows Server 2025' -OutputPath .\windows-server-2025.json
+Get-Content .\windows-server-2025.json
 ```
 
-Query a specific desktop product:
+Query all updates in-memory when you want the full list instead of a JSON artifact:
 
 ```powershell
-. .\Get-WindowsUpdateHistory.ps1
+. .\scripts\Get-WindowsUpdateHistory.ps1
 Get-WindowsUpdateHistory 'Windows 11, version 24H2' | Select-Object -First 5
+```
+
+Export full history snapshots for every supported product into `history/`:
+
+```powershell
+.\scripts\Export-WindowsUpdateHistory.ps1
+Get-ChildItem .\history\*.json
 ```
 
 ## GitHub Actions usage
