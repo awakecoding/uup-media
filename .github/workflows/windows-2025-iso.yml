@@ -1,25 +1,38 @@
 name: Windows 2025 ISO
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      os_arch:
+        description: Target architecture
+        required: true
+        default: x64
+        type: choice
+        options:
+          - x64
+          - arm64
+      os_build:
+        description: OS build to use, or latest
+        required: true
+        default: latest
+        type: string
 jobs:
   build:
     name: Windows 2025 ISO
     runs-on: windows-2025
-    strategy:
-      fail-fast: false
-      matrix:
-        os_build: [ latest ]
 
     steps:
       - name: Check out ${{ github.repository }}
         uses: actions/checkout@v4
 
       - name: Select Windows OS build
+        id: select_build
         shell: pwsh
         run: |
           . .\Get-WindowsUpdateHistory.ps1
           $ChangeHistoryName = "Windows Server 2025"
+          $OSArch = '${{ inputs.os_arch }}'
           
-          $OSBuild = '${{matrix.os_build}}'
+          $OSBuild = '${{ inputs.os_build }}'
           if ($OSBuild -eq 'latest') {
             $WindowsUpdate = Get-WindowsUpdateHistory $ChangeHistoryName | Select-Object -First 1
           } else {
@@ -31,9 +44,11 @@ jobs:
           }
 
           $OSBuild = $WindowsUpdate.Build
-          echo "OS_BUILD=$OSBuild" >> $Env:GITHUB_ENV
+          "os_build=$OSBuild" >> $Env:GITHUB_OUTPUT
+          "os_arch=$OSArch" >> $Env:GITHUB_OUTPUT
 
           echo "::notice::Name: $ChangeHistoryName"
+          echo "::notice::Architecture: $OSArch"
           echo "::notice::Title: $($WindowsUpdate.Title)"
           echo "::notice::Build: $($WindowsUpdate.Build)"
           echo "::notice::KB: $($WindowsUpdate.KB)"
@@ -57,20 +72,23 @@ jobs:
         shell: pwsh
         working-directory: C:\workspace
         run: |
-          $OSBuild = $Env:OS_BUILD
+          $OSArch = '${{ steps.select_build.outputs.os_arch }}'
+          $OSBuild = '${{ steps.select_build.outputs.os_build }}'
+          $MachineType = @{'x64'='amd64';'arm64'='arm64'}[$OSArch]
           $ReportingVersion = "10.0.${OSBuild}"
-          UUPDownload.exe -s StandardServer -r Retail -b Retail -c fe_release -l en-US -t amd64 -v $ReportingVersion
+          UUPDownload.exe -s StandardServer -r Retail -b Retail -c fe_release -l en-US -t $MachineType -v $ReportingVersion
 
       - name: Create Windows ISO
         shell: pwsh
         working-directory: C:\workspace
         run: |
-          $OSBuild = $Env:OS_BUILD
+          $OSArch = '${{ steps.select_build.outputs.os_arch }}'
+          $OSBuild = '${{ steps.select_build.outputs.os_build }}'
           $UupPath = Get-Item .\10.0.*.*.* | Select-Object -First 1 -ExpandProperty Name
-          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Windows_Server_2025_${OSBuild}.iso"
+          UUPMediaConverter.exe -l en-US --uup-path .\$UupPath --iso-path "C:\workspace\Windows_Server_2025_${OSBuild}_${OSArch}.iso"
 
       - name: Upload Windows ISO
         uses: actions/upload-artifact@v4
         with:
-          name: Windows_Server_2025-iso
-          path: C:\workspace\Windows_Server_2025_${{ env.OS_BUILD }}.iso
+          name: Windows_Server_2025-${{ steps.select_build.outputs.os_arch }}-iso
+          path: C:\workspace\Windows_Server_2025_${{ steps.select_build.outputs.os_build }}_${{ steps.select_build.outputs.os_arch }}.iso
